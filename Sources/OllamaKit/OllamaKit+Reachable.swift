@@ -21,7 +21,7 @@ extension OllamaKit {
     ///
     /// - Returns: `true` if the Ollama API is reachable, `false` otherwise.
     public func reachable() async -> Bool {
-        let request = AF.request(router.root).validate()
+        let request = self.session.request(router.root).validate()
         
         do {
             _ = try await request.serializingData().value
@@ -48,7 +48,7 @@ extension OllamaKit {
     ///
     /// - Returns: A `AnyPublisher<Bool, Never>` that emits `true` if the API is reachable, `false` otherwise.
     public func reachable() -> AnyPublisher<Bool, Never> {
-        let request = AF.request(router.root).validate()
+        let request = self.session.request(router.root).validate()
         
         return request.publishData().value()
             .map { _ in true }
