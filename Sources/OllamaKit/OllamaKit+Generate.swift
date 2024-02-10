@@ -31,8 +31,8 @@ extension OllamaKit {
     /// - Returns: An `AnyPublisher<OKGenerateResponse, AFError>` emitting the live stream of responses from the Ollama API.
     public func generate(data: OKGenerateRequestData) -> AnyPublisher<OKGenerateResponse, AFError> {
         let subject = PassthroughSubject<OKGenerateResponse, AFError>()
-        let request = AF.streamRequest(router.generate(data: data)).validate()
-        
+        let request = self.session.streamRequest(router.generate(data: data)).validate()
+
         request.responseStreamDecodable(of: OKGenerateResponse.self, using: decoder) { stream in
             switch stream.event {
             case .stream(let result):

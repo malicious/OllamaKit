@@ -24,7 +24,7 @@ extension OllamaKit {
     /// - Returns: An ``OKModelInfoResponse`` containing detailed information about the model.
     /// - Throws: An error if the request fails or the response can't be decoded.
     public func modelInfo(data: OKModelInfoRequestData) async throws -> OKModelInfoResponse {
-        let request = AF.request(router.modelInfo(data: data)).validate()
+        let request = self.session.request(router.modelInfo(data: data)).validate()
         let response = request.serializingDecodable(OKModelInfoResponse.self, decoder: decoder)
         let value = try await response.value
         
@@ -51,7 +51,7 @@ extension OllamaKit {
     /// - Parameter data: The ``OKModelInfoRequestData`` used to query the API for specific model information.
     /// - Returns: A `AnyPublisher<OKModelInfoResponse, AFError>` that emits detailed information about the model.
     public func modelInfo(data: OKModelInfoRequestData) -> AnyPublisher<OKModelInfoResponse, AFError> {
-        let request = AF.request(router.modelInfo(data: data)).validate()
+        let request = self.session.request(router.modelInfo(data: data)).validate()
         
         return request
             .publishDecodable(type: OKModelInfoResponse.self, decoder: decoder).value()

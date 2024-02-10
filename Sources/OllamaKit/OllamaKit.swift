@@ -5,6 +5,7 @@
 //  Created by Kevin Hermawan on 10/11/23.
 //
 
+import Alamofire
 import Foundation
 
 /// Provides a streamlined way to access the Ollama API, encapsulating the complexities of network communication and data processing.
@@ -21,11 +22,13 @@ import Foundation
 public struct OllamaKit {
     var router: OKRouter.Type
     var decoder: JSONDecoder = .default
+    var session: Alamofire.Session
     
     public init(baseURL: URL) {
         let router = OKRouter.self
         router.baseURL = baseURL
         
         self.router = router
+        self.session = Alamofire.Session()
     }
 }

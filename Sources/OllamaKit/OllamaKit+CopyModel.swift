@@ -23,7 +23,7 @@ extension OllamaKit {
     /// - Parameter data: The ``OKCopyModelRequestData`` containing the details needed to copy the model.
     /// - Throws: An error if the request to copy the model fails.
     public func copyModel(data: OKCopyModelRequestData) async throws -> Void {
-        let request = AF.request(router.copyModel(data: data)).validate()
+        let request = self.session.request(router.copyModel(data: data)).validate()
         _ = try await request.serializingData().response.result.get()
     }
     
@@ -47,7 +47,7 @@ extension OllamaKit {
     /// - Parameter data: The ``OKCopyModelRequestData`` used to request the model copy.
     /// - Returns: A `AnyPublisher<Void, Error>` that completes when the copy operation is done.
     public func copyModel(data: OKCopyModelRequestData) -> AnyPublisher<Void, Error> {
-        let request = AF.request(router.copyModel(data: data)).validate()
+        let request = self.session.request(router.copyModel(data: data)).validate()
         
         return request.publishData()
             .tryMap { _ in Void() }

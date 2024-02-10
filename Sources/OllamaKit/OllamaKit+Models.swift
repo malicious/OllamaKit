@@ -22,7 +22,7 @@ extension OllamaKit {
     /// - Returns: An ``OKModelResponse`` object listing the available models.
     /// - Throws: An error if the request fails or the response can't be decoded.
     public func models() async throws -> OKModelResponse {
-        let request = AF.request(router.models).validate()
+        let request = self.session.request(router.models).validate()
         let response = request.serializingDecodable(OKModelResponse.self, decoder: decoder)
         let value = try await response.value
         
@@ -47,7 +47,7 @@ extension OllamaKit {
     ///
     /// - Returns: A `AnyPublisher<OKModelResponse, AFError>` that emits the list of available models.
     public func models() -> AnyPublisher<OKModelResponse, AFError> {
-        let request = AF.request(router.models).validate()
+        let request = self.session.request(router.models).validate()
         
         return request
             .publishDecodable(type: OKModelResponse.self, decoder: decoder).value()
