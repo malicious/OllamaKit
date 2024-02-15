@@ -24,7 +24,7 @@ extension OllamaKit {
     /// - Returns: An ``OKGenerateEmbeddingsResponse`` containing the embeddings from the model.
     /// - Throws: An error if the request fails or the response can't be decoded.
     public func generateEmbeddings(data: OKGenerateEmbeddingsRequestData) async throws -> OKGenerateEmbeddingsResponse {
-        let request = AF.request(router.generateEmbeddings(data: data)).validate()
+        let request = self.session.request(router.generateEmbeddings(data: data)).validate()
         let response = request.serializingDecodable(OKGenerateEmbeddingsResponse.self, decoder: decoder)
         let value = try await response.value
         
@@ -51,7 +51,7 @@ extension OllamaKit {
     /// - Parameter data: The ``OKGenerateEmbeddingsRequestData`` used to query the API for embeddings from a specific model.
     /// - Returns: A `AnyPublisher<OKGenerateEmbeddingsResponse, AFError>` that emits embeddings.
     public func generateEmbeddings(data: OKGenerateEmbeddingsRequestData) -> AnyPublisher<OKGenerateEmbeddingsResponse, AFError> {
-        let request = AF.request(router.generateEmbeddings(data: data)).validate()
+        let request = self.session.request(router.generateEmbeddings(data: data)).validate()
         
         return request
             .publishDecodable(type: OKGenerateEmbeddingsResponse.self, decoder: decoder).value()
