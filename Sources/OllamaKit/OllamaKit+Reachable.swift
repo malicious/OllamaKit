@@ -20,8 +20,11 @@ extension OllamaKit {
     /// ```
     ///
     /// - Returns: `true` if the Ollama API is reachable, `false` otherwise.
-    public func reachable() async -> Bool {
-        let request = self.session.request(router.root).validate()
+    public func reachable(timeoutInterval: TimeInterval = 2.0) async -> Bool {
+        var urlRequest: URLRequest = try! router.root.asURLRequest()
+        urlRequest.timeoutInterval = timeoutInterval
+        
+        let request = self.session.request(urlRequest).validate()
         
         do {
             _ = try await request.serializingData().value
