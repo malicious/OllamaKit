@@ -29,19 +29,30 @@ extension OllamaKit {
     ///
     /// - Parameter data: The ``OKChatRequestData`` used to initiate the chat streaming from the Ollama API.
     /// - Returns: An `AnyPublisher<OKChatResponse, AFError>` emitting the live stream of chat responses from the Ollama API.
-    public func chat(data: OKChatRequestData) -> AnyPublisher<OKChatResponse, AFError> {
-        let subject = PassthroughSubject<OKChatResponse, AFError>()
+    public func chat(data: OKChatRequestData) -> AnyPublisher<OKChatResponse, Error> {
+        let subject = PassthroughSubject<OKChatResponse, Error>()
         let request = self.session.streamRequest(router.chat(data: data)).validate()
-
-        request.responseStreamDecodable(of: OKChatResponse.self, using: decoder) { stream in
+        
+        request.responseStream { stream in
             switch stream.event {
             case .stream(let result):
                 switch result {
-                case .success(let response):
-                    subject.send(response)
+                case .success(let data):
+                    
+                    do {
+                        let response = try decoder.decode(OKChatResponse.self, from: data)
+                        subject.send(response)
+                    } catch {
+                        let ndjsonStream = NDJSONStream<OKChatResponse>(data: data)
+                        for message in ndjsonStream {
+                            subject.send(message)
+                        }
+                    }
+                    
                 case .failure(let error):
                     subject.send(completion: .failure(error))
                 }
+                
             case .complete(let completion):
                 if completion.error != nil {
                     subject.send(completion: .failure(completion.error!))

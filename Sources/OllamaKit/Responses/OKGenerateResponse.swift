@@ -13,7 +13,7 @@ public struct OKGenerateResponse: OKCompletionResponse, Decodable {
     public let model: String
     
     /// A `Date` indicating when the response was generated.
-    public let createdAt: Date
+    public let createdAt: Date?
     
     /// A string containing the generated content.
     public let response: String
@@ -22,7 +22,7 @@ public struct OKGenerateResponse: OKCompletionResponse, Decodable {
     public let context: [Int]?
     
     /// A boolean indicating whether the generation process is complete.
-    public let done: Bool
+    public let done: Bool?
     
     /// An optional integer representing the total duration of processing the request.
     public let totalDuration: Int?

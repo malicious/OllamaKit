@@ -13,13 +13,13 @@ public struct OKChatResponse: OKCompletionResponse, Decodable {
     public let model: String
     
     /// A `Date` indicating when the response was created.
-    public let createdAt: Date
+    public let createdAt: Date?
     
     /// An optional `Message` instance representing the content of the response.
     public let message: Message?
     
     /// A boolean indicating whether the chat session is complete.
-    public let done: Bool
+    public let done: Bool?
     
     /// An optional integer representing the total duration of processing the request.
     public let totalDuration: Int?

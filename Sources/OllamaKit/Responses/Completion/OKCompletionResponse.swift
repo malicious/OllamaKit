@@ -9,8 +9,8 @@ import Foundation
 
 protocol OKCompletionResponse: Decodable {
     var model: String { get }
-    var createdAt: Date { get }
-    var done: Bool { get }
+    var createdAt: Date? { get }
+    var done: Bool? { get }
     
     var totalDuration: Int? { get }
     var loadDuration: Int? { get }
