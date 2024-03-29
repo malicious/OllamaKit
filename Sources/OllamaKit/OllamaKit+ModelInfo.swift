@@ -25,6 +25,7 @@ extension OllamaKit {
     /// - Throws: An error if the request fails or the response can't be decoded.
     public func modelInfo(data: OKModelInfoRequestData) async throws -> OKModelInfoResponse {
         let request = self.session.request(router.modelInfo(data: data)).validate()
+
         let response = request.serializingDecodable(OKModelInfoResponse.self, decoder: decoder)
         let value = try await response.value
         
@@ -54,7 +55,25 @@ extension OllamaKit {
         let request = self.session.request(router.modelInfo(data: data)).validate()
         
         return request
-            .publishDecodable(type: OKModelInfoResponse.self, decoder: decoder).value()
+            .publishDecodable(type: OKModelInfoResponse.self, decoder: decoder)
+            .value()
+            .eraseToAnyPublisher()
+    }
+
+    public func rawModelInfo(data: OKModelInfoRequestData) async throws -> Data {
+        let request = self.session.request(router.modelInfo(data: data)).validate()
+
+        let response = request.serializingData()
+        let value = try await response.value
+
+        return value
+    }
+
+    public func rawModelInfo(data: OKModelInfoRequestData) -> AnyPublisher<Data, AFError> {
+        let request = self.session.request(router.modelInfo(data: data)).validate()
+        return request
+            .publishData()
+            .value()
             .eraseToAnyPublisher()
     }
 }
