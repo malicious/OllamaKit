@@ -24,10 +24,11 @@ public struct OllamaKit {
     var decoder: JSONDecoder = .default
     var session: Alamofire.Session
     
-    public init(baseURL: URL, timeoutIntervalForRequest: TimeInterval = 24 * 3600.0, timeoutIntervalForResource: TimeInterval = 7 * 24 * 3600.0) {
+    public init(baseURL: URL, bearerToken: String? = nil, timeoutIntervalForRequest: TimeInterval = 24 * 3600.0, timeoutIntervalForResource: TimeInterval = 7 * 24 * 3600.0) {
         let router = OKRouter.self
         router.baseURL = baseURL
-        
+        router.bearerToken = bearerToken
+
         self.router = router
 
         // Increase the TCP timeoutIntervalForRequest to 24 hours (configurable),

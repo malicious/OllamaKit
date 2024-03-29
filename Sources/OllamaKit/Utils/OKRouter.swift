@@ -10,6 +10,7 @@ import Foundation
 
 internal enum OKRouter {
     static var baseURL = URL(string: "http://localhost:11434")!
+    static var bearerToken: String? = nil
     
     case root
     case models
@@ -63,7 +64,10 @@ internal enum OKRouter {
     }
     
     internal var headers: HTTPHeaders {
-        ["Content-Type": "application/json"]
+        [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(OKRouter.bearerToken ?? "")"
+        ]
     }
 }
 
