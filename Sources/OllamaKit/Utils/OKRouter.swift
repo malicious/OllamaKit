@@ -66,7 +66,7 @@ internal enum OKRouter {
     internal var headers: HTTPHeaders {
         [
             "Content-Type": "application/json",
-            "Authorization": "Bearer \(OKRouter.bearerToken ?? "")"
+            "Authorization": "Bearer \(OKRouter.bearerToken ?? "QQ==")"
         ]
     }
 }
